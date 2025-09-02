@@ -40,11 +40,11 @@ export default function ShopDetailsPage() {
       <Star
         key={i}
         className={`h-5 w-5 ${
-          interactive ? "cursor-pointer hover:scale-110 transition-transform" : ""
+          interactive ? "cursor-pointer hover:scale-110  transition-transform" : ""
         } ${
           i < Math.floor(rating)
-            ? "fill-food-rating text-food-rating"
-            : "fill-muted-foreground/20 text-muted-foreground/40"
+            ? "fill-secondary text-primary "
+            : "fill-secondary/20 text-primary/40"
         }`}
         onClick={() => interactive && onClick?.(i + 1)}
       />
