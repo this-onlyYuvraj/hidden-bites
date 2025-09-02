@@ -74,7 +74,7 @@ export default function HomePage() {
       
       <div className="pb-24">
         {/* Search Bar - Sticky on mobile */}
-        <div className="sticky top-16 z-30 bg-background/95 backdrop-blur-sm border-b border-border/50 mb-2">
+        <div className="sticky top-21 z-30 bg-background/95 backdrop-blur-sm border-b border-border/50 mb-2">
           <div className="container px-4 py-3">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-brand-primary" />

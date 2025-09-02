@@ -7,9 +7,11 @@ import { Header } from "../../components/layout/Header";
 import { BottomNav } from "../../components/layout/BottomNav";
 import { ShopCard } from "../../components/shop/ShopCard";
 import { mockShops, mockUser } from "../../data/mockShops";
-import { MapPin, Navigation } from "lucide-react";
+import { ArrowLeft, MapPin, Navigation } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function MapPage() {
+  const router = useRouter();
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [nearbyShops, setNearbyShops] = useState(mockShops.slice(0, 3));
 
@@ -23,10 +25,18 @@ export default function MapPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header user={mockUser} />
-      
+
       <div className="pb-24">
         <div className="container px-4 py-6 space-y-6">
           {/* Map Header */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.back()}
+            className="h-10 w-15 p-0"
+          >
+            <ArrowLeft className="h-15 w-15" />
+          </Button>
           <Card className="shadow-card">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -46,7 +56,7 @@ export default function MapPage() {
                 {/* Simulated Map Background */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,155,0,0.1),transparent_50%)] opacity-50" />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,233,0,0.1),transparent_50%)] opacity-50" />
-                
+
                 {/* Interactive Areas */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="grid grid-cols-2 gap-8">
@@ -61,7 +71,7 @@ export default function MapPage() {
                         <span className="text-sm">MG Road</span>
                       </div>
                     </Button>
-                    
+
                     <Button
                       variant="outline"
                       size="lg"
@@ -73,7 +83,7 @@ export default function MapPage() {
                         <span className="text-sm">FC Road</span>
                       </div>
                     </Button>
-                    
+
                     <Button
                       variant="outline"
                       size="lg"
@@ -85,7 +95,7 @@ export default function MapPage() {
                         <span className="text-sm">Koregaon Park</span>
                       </div>
                     </Button>
-                    
+
                     <Button
                       variant="outline"
                       size="lg"

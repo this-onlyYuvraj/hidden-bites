@@ -2,10 +2,10 @@
 
 import { Button } from "../../components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card";
-import { Chrome, Utensils } from "lucide-react";
+import { Chrome, Star, Utensils } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner"; 
-
+import HB from "@/public/assets/HB.png"
 
 
 export default function LoginPage() {
@@ -22,23 +22,14 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <div className="relative h-[60vh] overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src={'/'}
-            alt="Food discovery"
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-hero/80" />
-        </div>
-        
+      <div className="relative h-[45vh] overflow-hidden">        
         <div className="relative flex h-full items-center justify-center px-4">
           <div className="text-center text-white">
             <div className="flex items-center justify-center gap-3 mb-6">
-              <Utensils className="h-12 w-12" />
-              <h1 className="text-4xl font-bold">FoodSpot</h1>
+              <img src={HB.src} alt="Logo" className="w-25 h-25 mb-[-15px]" />
+              <h1 className="text-4xl font-bold">HiddenBites</h1>
             </div>
-            <p className="text-lg opacity-90 max-w-md">
+            <p className="text-lg opacity-90 max-w-md mb-15">
               Discover hidden gems and underrated food spots in your neighborhood
             </p>
           </div>
@@ -58,7 +49,7 @@ export default function LoginPage() {
             <Button
               onClick={handleGoogleLogin}
               size="lg"
-              className="w-full bg-gradient-hero hover:opacity-90 transition-opacity"
+              className="w-full hover:opacity-90 transition-opacity cursor-pointer"
             >
               <Chrome className="mr-2 h-5 w-5" />
               Continue with Google
@@ -96,7 +87,7 @@ export default function LoginPage() {
           
           <div className="text-center space-y-2">
             <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-              <Utensils className="h-6 w-6 text-primary" />
+              <Star className="h-6 w-6 text-primary" />
             </div>
             <h3 className="font-semibold">Rate & Review</h3>
             <p className="text-sm text-muted-foreground">

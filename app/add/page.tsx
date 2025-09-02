@@ -87,9 +87,9 @@ export default function AddShopPage() {
             variant="ghost"
             size="sm"
             onClick={() => router.back()}
-            className="h-10 w-10 p-0"
+            className="h-15 w-15 p-0"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-15 w-15" />
           </Button>
           <h1 className="text-2xl font-bold">Add New Shop</h1>
         </div>

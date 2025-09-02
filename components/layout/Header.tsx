@@ -9,9 +9,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { LogOut, User, Utensils } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import HiddenBites from "@/public/assets/HiddenBites.png"
 
 interface HeaderProps {
   user?: {
@@ -31,17 +32,17 @@ export function Header({ user }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between px-4">
+      <div className="container flex h-16 items-center justify-between px-4 pt-5 mb-5">
         {/* Logo */}
         <Link href="/">
           <Button
             variant="ghost"
             className="flex items-center gap-2 text-xl font-bold text-primary hover:bg-transparent"
           >
-            <Utensils className="h-6 w-6" />
-            <span className="bg-gradient-hero bg-clip-text text-transparent">
-              FoodSpot
-            </span>
+            <img 
+            src={HiddenBites.src} 
+            alt="Logo" 
+            className="h-20 w-20 md:h-25 md:w-25"/>
           </Button>
         </Link>
 
@@ -50,7 +51,7 @@ export function Header({ user }: HeaderProps) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                <Avatar className="h-10 w-10">
+                <Avatar className="h-11 w-11 md:h-15 md:w-15">
                   <AvatarImage src={user.avatar} alt={user.name} />
                   <AvatarFallback className="bg-primary text-primary-foreground">
                     {user.name.charAt(0).toUpperCase()}
