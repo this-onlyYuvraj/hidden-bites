@@ -30,10 +30,10 @@ export default function MapPage() {
         <div className="container px-4 py-6 space-y-6">
           {/* Map Header */}
           <Button
-            variant="ghost"
+            variant="link"
             size="sm"
             onClick={() => router.back()}
-            className="h-10 w-15 p-0"
+            className="h-5 w-15 p-0"
           >
             <ArrowLeft className="h-15 w-15" />
           </Button>

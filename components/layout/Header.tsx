@@ -12,7 +12,7 @@ import {
 import { LogOut, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import HiddenBites from "@/public/assets/HiddenBites.png"
+import HiddenBites from "@/public/assets/HB.png"
 
 interface HeaderProps {
   user?: {
@@ -31,21 +31,23 @@ export function Header({ user }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between px-4 pt-5 mb-5">
+    <header className="top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center justify-between pr-4 pt-5 mb-5">
         {/* Logo */}
-        <Link href="/">
-          <Button
-            variant="ghost"
-            className="flex items-center gap-2 text-xl font-bold text-primary hover:bg-transparent"
-          >
-            <img 
-            src={HiddenBites.src} 
-            alt="Logo" 
-            className="h-20 w-20 md:h-25 md:w-25"/>
-          </Button>
-        </Link>
-
+        <div className="flex gap-8">
+          <Link href="/">
+            <Button
+              variant="ghost"
+              className="flex items-center gap-2 text-xl font-bold text-primary hover:bg-transparent"
+            >
+              <img
+                src={HiddenBites.src}
+                alt="Logo"
+                className="h-20 w-20 md:h-25 md:w-25" />
+            </Button>
+          </Link>
+          <h1 style={{fontFamily:"waterlily, sans-serif"}} className="text-2xl text-primary">Hidden Bites</h1>
+        </div>
         {/* User Menu */}
         {user ? (
           <DropdownMenu>
@@ -59,9 +61,9 @@ export function Header({ user }: HeaderProps) {
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent 
-              className="w-56 bg-card shadow-dropdown" 
-              align="end" 
+            <DropdownMenuContent
+              className="w-56 bg-card shadow-dropdown"
+              align="end"
               forceMount
             >
               <div className="flex items-center justify-start gap-2 p-2">

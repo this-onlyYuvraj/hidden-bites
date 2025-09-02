@@ -48,11 +48,11 @@
 :root {
   --radius: 0.625rem;
 
-  --background: #ffffff;
+  --background: #fffceb;
   --foreground: #1a1a1a;
 
   --primary: #FF9B00;
-  --primary-foreground: #ffffff;
+  --primary-foreground: #e7e2c5ae;
 
   --secondary: #FFE100;
   --secondary-foreground: #1a1a1a;
@@ -60,7 +60,7 @@
   --accent: #FFC900;
   --accent-foreground: #1a1a1a;
 
-  --card: #ffffff;
+  --card: #ffedba;
   --card-foreground: #1a1a1a;
 
   --popover: #ffffff;
