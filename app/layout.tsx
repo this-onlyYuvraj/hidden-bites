@@ -3,15 +3,18 @@ import type { Metadata, Viewport } from "next"
 import { Toaster as Sonner } from "@/components/ui/sonner"
 import ClientProviders from "@/components/client-providers"
 import "./globals.css"
+import { Roboto } from "next/font/google"
+
+const roboto = Roboto({ subsets: ['latin'], weight: ['400','500','700'] })
 
 export const metadata: Metadata = {
-  title: "FoodSpot - Discover Hidden Food Gems",
+  title: "Hidden Bites - Discover Hidden Food Gems",
   description:
     "Find amazing food spots recommended by your community. Discover hidden and underrated shops near your area.",
   keywords: "food discovery, restaurants, food spots, hidden gems, local food",
-  authors: [{ name: "FoodSpot Team" }],
-  creator: "FoodSpot",
-  publisher: "FoodSpot",
+  authors: [{ name: "HiddenBites Team" }],
+  creator: "HiddenBites",
+  publisher: "HiddenBites",
   formatDetection: {
     email: false,
     address: false,
@@ -38,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "FoodSpot - Discover Hidden Food Gems",
+    title: "HiddenBites - Discover Hidden Food Gems",
     description: "Find amazing food spots recommended by your community",
   },
 }
@@ -52,9 +55,9 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={roboto.className}>
       <head>
-        <link rel="canonical" href="https://foodspot.app" />
+        <link rel="canonical" href="https://hiddenbites.app" />
       </head>
       <body>
         <ClientProviders>

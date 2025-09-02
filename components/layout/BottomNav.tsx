@@ -44,13 +44,13 @@ export function BottomNav() {
                     <Button
                       variant="ghost"
                       className={cn(
-                        "flex items-center gap-5 h-12 w-16 md:w-25 rounded-xl transition-colors",
+                        "flex items-center gap-5 h-15 w-16 md:w-25 rounded-xl transition-colors",
                         isActive
                           ? "text-primary bg-primary/10"
                           : "text-muted-foreground hover:text-foreground"
                       )}
                     >
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-20 w-20" />
                       <span className="text-md font-medium hidden md:block">
                         {item.label}
                       </span>

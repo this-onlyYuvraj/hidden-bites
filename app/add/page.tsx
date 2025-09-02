@@ -195,7 +195,7 @@ export default function AddShopPage() {
               <Button
                 type="submit"
                 size="lg"
-                className="w-full bg-gradient-fab hover:opacity-90 transition-opacity"
+                className="w-full text-black bg-gradient-fab hover:opacity-90 transition-opacity"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Adding Shop..." : "Add Shop"}
