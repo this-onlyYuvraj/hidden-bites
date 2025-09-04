@@ -2,15 +2,27 @@
 
 import { useState } from "react";
 import { Button } from "../../../components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../../components/ui/card";
 import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/label";
 import { Textarea } from "../../../components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../components/ui/select";
 import { BottomNav } from "../../../components/layout/BottomNav";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner"; 
+import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
+import {getCurrentLocation} from "@/components/currentLocation"
 
 export default function AddShopPage() {
   const router = useRouter();
@@ -44,20 +56,11 @@ export default function AddShopPage() {
     "Others",
   ];
 
-  const priceRanges = [
-    "₹30-100",
-    "₹100-200",
-    "₹200-400",
-    "₹400-800",
-    "₹800+",
-  ];
+  const priceRanges = ["₹30-100", "₹100-200", "₹200-400", "₹400-800", "₹800+"];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Simulate API call
-   
 
     toast.success("Shop Added Successfully!", {
       description: `${formData.name} has been added to FoodSpot.`,
@@ -77,7 +80,6 @@ export default function AddShopPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      
       <div className="container px-4 py-6 pb-24">
         <div className="flex items-center gap-4 mb-6">
           <Button
@@ -114,7 +116,9 @@ export default function AddShopPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="type">Type *</Label>
-                  <Select onValueChange={(value) => handleInputChange("type", value)}>
+                  <Select
+                    onValueChange={(value) => handleInputChange("type", value)}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
@@ -126,13 +130,15 @@ export default function AddShopPage() {
                       ))}
                     </SelectContent>
                   </Select>
-                  
+
                   {showCustomType && (
                     <div className="mt-2">
                       <Input
                         placeholder="Enter custom food type"
                         value={formData.customType}
-                        onChange={(e) => handleInputChange("customType", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("customType", e.target.value)
+                        }
                         className="animate-fade-in"
                       />
                     </div>
@@ -141,7 +147,11 @@ export default function AddShopPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="priceRange">Price Range *</Label>
-                  <Select onValueChange={(value) => handleInputChange("priceRange", value)}>
+                  <Select
+                    onValueChange={(value) =>
+                      handleInputChange("priceRange", value)
+                    }
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Select range" />
                     </SelectTrigger>
@@ -162,20 +172,46 @@ export default function AddShopPage() {
                   id="specialty"
                   placeholder="What are they famous for?"
                   value={formData.specialty}
-                  onChange={(e) => handleInputChange("specialty", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("specialty", e.target.value)
+                  }
                   required
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="location">Location *</Label>
-                <Input
-                  id="location"
-                  placeholder="Area, City"
-                  value={formData.location}
-                  onChange={(e) => handleInputChange("location", e.target.value)}
-                  required
-                />
+                <div className="flex gap-2">
+                  <Input
+                    id="location"
+                    placeholder="Area, City"
+                    value={formData.location}
+                    onChange={(e) =>
+                      handleInputChange("location", e.target.value)
+                    }
+                    required
+                  />
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={async () => {
+                      try {
+                        toast.loading("Fetching your location...");
+                        const loc = await getCurrentLocation();
+                        if (loc) {
+                          handleInputChange("location", loc.address);
+                          toast.success("Location added!");
+                        }
+                      } catch (err: any) {
+                        toast.error(err.toString());
+                      } finally {
+                        toast.dismiss();
+                      }
+                    }}
+                  >
+                    Use Current
+                  </Button>
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -184,7 +220,9 @@ export default function AddShopPage() {
                   id="description"
                   placeholder="Tell us more about this place..."
                   value={formData.description}
-                  onChange={(e) => handleInputChange("description", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("description", e.target.value)
+                  }
                   rows={3}
                 />
               </div>

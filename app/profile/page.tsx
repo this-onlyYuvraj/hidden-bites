@@ -55,7 +55,7 @@ export default async function ProfilePage() {
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
               <Avatar className="h-20 w-20">
-                <AvatarImage src={session?.user?.image ?? ""} alt={session?.user?.name ?? ""} />
+                <AvatarImage src={session.user?.image ?? ""} alt={session?.user?.name ?? ""} />
                 <AvatarFallback className="bg-primary text-primary-foreground text-xl">
                   {(session?.user?.name?.charAt(0)?.toUpperCase()) ?? ""}
                 </AvatarFallback>
