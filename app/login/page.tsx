@@ -6,13 +6,13 @@ import { Chrome, Star, Utensils } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner"; 
 import HB from "@/public/assets/HB.png"
+import { login, logout } from "@/lib/auth-actions";
 
 
 export default function LoginPage() {
   const router = useRouter();
 
   const handleGoogleLogin = () => {
-    // Simulate login success
     toast.success("Welcome to FoodSpot!", {
       description: "Successfully signed in with Google.",
     });
@@ -47,7 +47,7 @@ export default function LoginPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <Button
-              onClick={handleGoogleLogin}
+              onClick={login}
               size="lg"
               className="w-full hover:opacity-90 transition-opacity cursor-pointer"
             >
