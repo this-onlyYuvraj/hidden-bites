@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Header } from "@/components/layout/Header";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { mockShops, mockUser } from "@/data/mockShops";
 import { ArrowLeft, Star, MapPin, IndianRupee, Calendar, User } from "lucide-react";
@@ -69,7 +68,6 @@ export default function ShopDetailsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header user={mockUser} />
       
       <div className="pb-24">
         {/* Hero Image */}

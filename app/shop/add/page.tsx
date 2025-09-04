@@ -1,17 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "../../components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
-import { Input } from "../../components/ui/input";
-import { Label } from "../../components/ui/label";
-import { Textarea } from "../../components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
-import { Header } from "../../components/layout/Header";
-import { BottomNav } from "../../components/layout/BottomNav";
+import { Button } from "../../../components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
+import { Input } from "../../../components/ui/input";
+import { Label } from "../../../components/ui/label";
+import { Textarea } from "../../../components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select";
+import { BottomNav } from "../../../components/layout/BottomNav";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner"; 
-import { mockUser } from "../../data/mockShops";
 import { ArrowLeft } from "lucide-react";
 
 export default function AddShopPage() {
@@ -59,7 +57,7 @@ export default function AddShopPage() {
     setIsSubmitting(true);
 
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+   
 
     toast.success("Shop Added Successfully!", {
       description: `${formData.name} has been added to FoodSpot.`,
@@ -79,7 +77,6 @@ export default function AddShopPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header user={mockUser} />
       
       <div className="container px-4 py-6 pb-24">
         <div className="flex items-center gap-4 mb-6">

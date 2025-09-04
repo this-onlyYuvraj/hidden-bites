@@ -9,26 +9,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { LogOut, User } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 import Link from "next/link";
 import HiddenBites from "@/public/assets/HB.png"
 
-interface HeaderProps {
-  user?: {
-    name: string;
-    email: string;
-    avatar?: string;
-  } | null;
-}
+import { logout } from "@/lib/auth-actions";
+import { Session } from "next-auth";
 
-export function Header({ user }: HeaderProps) {
-  const router = useRouter();
-
-  const handleLogout = () => {
-    // Handle logout logic here
-    router.push("/login");
-  };
+export function Header({ session }: {session:Session | null}) {
 
   return (
     <header className="top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -48,15 +36,18 @@ export function Header({ user }: HeaderProps) {
           </Link>
           <h1 style={{fontFamily:"waterlily, sans-serif"}} className="text-2xl text-primary">Hidden Bites</h1>
         </div>
-        {/* User Menu */}
-        {user ? (
+        {/* session Menu */}
+        {session ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                 <Avatar className="h-11 w-11 md:h-15 md:w-15">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarImage
+                    src={session.user?.image ?? undefined}
+                    alt={session.user?.name ?? undefined}
+                  />
                   <AvatarFallback className="bg-primary text-primary-foreground">
-                    {user.name.charAt(0).toUpperCase()}
+                    {(session.user?.name?.charAt(0)?.toUpperCase() ?? "")}
                   </AvatarFallback>
                 </Avatar>
               </Button>
@@ -68,17 +59,19 @@ export function Header({ user }: HeaderProps) {
             >
               <div className="flex items-center justify-start gap-2 p-2">
                 <div className="flex flex-col space-y-1 leading-none">
-                  <p className="font-medium text-sm">{user.name}</p>
-                  <p className="text-xs text-muted-foreground">{user.email}</p>
+                  <p className="font-medium text-sm">{session.user?.name}</p>
+                  <p className="text-xs text-muted-foreground">{session.user?.email}</p>
                 </div>
               </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => router.push("/profile")}>
-                <User className="mr-2 h-4 w-4" />
-                Profile
+              <DropdownMenuItem>
+                
+               <Link href={"/profile"}>
+                   Profile               
+               </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout}>
+              <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Log out
               </DropdownMenuItem>

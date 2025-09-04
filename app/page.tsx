@@ -5,10 +5,9 @@ import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Skeleton } from "../components/ui/skeleton";
 import { Input } from "../components/ui/input";
-import { Header } from "../components/layout/Header";
 import { BottomNav } from "../components/layout/BottomNav";
 import { ShopCard } from "../components/shop/ShopCard";
-import { mockShops, mockUser } from "../data/mockShops";
+import { mockShops } from "../data/mockShops";
 import { SlidersHorizontal, Star, TrendingUp, Search } from "lucide-react";
 
 type SortOption = "newest" | "topRated";
@@ -69,7 +68,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header user={mockUser} />
       
       <div className="pb-24">
         {/* Search Bar - Sticky on mobile */}

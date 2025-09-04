@@ -4,6 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner"
 import ClientProviders from "@/components/client-providers"
 import "./globals.css"
 import { Roboto } from "next/font/google"
+import { auth } from "@/auth";
+import { Header } from "@/components/layout/Header"
 
 const roboto = Roboto({ subsets: ['latin'], weight: ['400','500','700'] })
 
@@ -53,7 +55,8 @@ export const viewport: Viewport = {
   maximumScale: 1,
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth();
   return (
     <html lang="en" className={roboto.className}>
       <head>
@@ -61,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <ClientProviders>
+          <Header session={session}/>
           {children}
           <Sonner richColors position="top-right" />
         </ClientProviders>

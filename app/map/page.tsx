@@ -3,10 +3,9 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
-import { Header } from "../../components/layout/Header";
 import { BottomNav } from "../../components/layout/BottomNav";
 import { ShopCard } from "../../components/shop/ShopCard";
-import { mockShops, mockUser } from "../../data/mockShops";
+import { mockShops } from "../../data/mockShops";
 import { ArrowLeft, MapPin, Navigation } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -24,7 +23,6 @@ export default function MapPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header user={mockUser} />
 
       <div className="pb-24">
         <div className="container px-4 py-6 space-y-6">
