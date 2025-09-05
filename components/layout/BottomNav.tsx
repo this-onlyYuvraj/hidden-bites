@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "../../lib/utils";
-import { Home, MapPin, Plus, User } from "lucide-react";
+import { Home, MapPin, Plus, Store, User } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 import Link from "next/link";
@@ -21,6 +21,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { icon: Home, label: "Home", path: "/" },
+  {icon: Store, label: "Shop", path: "/shop" },
   { icon: MapPin, label: "Map", path: "/map" },
   { icon: Plus, label: "Add", path: "/shop/add" },
   { icon: User, label: "Profile", path: "/profile" },

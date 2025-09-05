@@ -12,10 +12,19 @@ interface Shop {
   specialty: string;
   priceRange: string;
   location: string;
-  rating: number;
-  reviewCount: number;
   image: string;
   addedBy: string;
+  reviews: {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    rating: number;
+    comment: string;
+    shopId: string;
+    userId: string;
+  }[];
+  rating: number;
+  reviewCount: number;
 }
 
 interface ShopCardProps {
@@ -25,8 +34,8 @@ interface ShopCardProps {
 export function ShopCard({ shop }: ShopCardProps) {
   const router = useRouter();
 
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
+  const renderStars = (rating: number) =>
+    Array.from({ length: 5 }, (_, i) => (
       <Star
         key={i}
         className={`h-4 w-4 ${
@@ -36,21 +45,20 @@ export function ShopCard({ shop }: ShopCardProps) {
         }`}
       />
     ));
-  };
 
   return (
-    <Card 
+    <Card
       className="group cursor-pointer overflow-hidden bg-gradient-card shadow-card hover:shadow-lg transition-all duration-300 hover:scale-[1.02] animate-fade-in"
       onClick={() => router.push(`/shop/${shop.id}`)}
     >
-      <div className="aspect-[2/1]  overflow-hidden">
+      <div className="aspect-[2/1] overflow-hidden">
         <img
-          src={shop.image}
+          src={shop.image ?? '/assets/placeholder.svg'}
           alt={shop.name}
-          className="h-1/2 w-1/2 object-cover transition-transform duration-300 group-hover:scale-105"
+          className="h-full w-full object-cover px-3 transition-transform duration-300 group-hover:scale-105"
         />
       </div>
-      
+
       <CardContent className="p-4 space-y-3">
         <div className="flex items-start justify-between">
           <div className="flex-1 min-w-0">
@@ -66,15 +74,12 @@ export function ShopCard({ shop }: ShopCardProps) {
           </Badge>
         </div>
 
-        <div className="flex items-center gap-1">
+        {/* <div className="flex items-center gap-1">
           {renderStars(shop.rating)}
           <span className="text-sm font-medium ml-1">
-            {shop.rating.toFixed(1)}
+            {shop.rating.toFixed(1)} ({shop.reviewCount})
           </span>
-          <span className="text-xs text-muted-foreground">
-            ({shop.reviewCount})
-          </span>
-        </div>
+        </div> */}
 
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center gap-1 text-food-location">
@@ -82,7 +87,6 @@ export function ShopCard({ shop }: ShopCardProps) {
             <span className="truncate">{shop.location}</span>
           </div>
           <div className="flex items-center gap-1 text-food-price font-medium">
-            <IndianRupee className="h-3 w-3" />
             <span>{shop.priceRange}</span>
           </div>
         </div>
