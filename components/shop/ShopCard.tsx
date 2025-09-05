@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Star, IndianRupee } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface Shop {
   id: string;
@@ -38,11 +39,10 @@ export function ShopCard({ shop }: ShopCardProps) {
     Array.from({ length: 5 }, (_, i) => (
       <Star
         key={i}
-        className={`h-4 w-4 ${
-          i < Math.floor(rating)
+        className={`h-4 w-4 ${i < Math.floor(rating)
             ? "fill-food-rating text-food-rating"
             : "fill-muted-foreground/20 text-muted-foreground/40"
-        }`}
+          }`}
       />
     ));
 
@@ -52,7 +52,9 @@ export function ShopCard({ shop }: ShopCardProps) {
       onClick={() => router.push(`/shop/${shop.id}`)}
     >
       <div className="aspect-[2/1] overflow-hidden">
-        <img
+        <Image
+          width={100}
+          height={100}
           src={shop.image ?? '/assets/placeholder.svg'}
           alt={shop.name}
           className="h-full w-full object-cover px-3 transition-transform duration-300 group-hover:scale-105"

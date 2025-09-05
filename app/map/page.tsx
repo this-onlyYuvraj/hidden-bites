@@ -1,22 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { ShopCard } from "../../components/shop/ShopCard";
-import { mockShops } from "../../data/mockShops";
 import { ArrowLeft, MapPin, Navigation } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function MapPage() {
   const router = useRouter();
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
-  const [nearbyShops, setNearbyShops] = useState(mockShops.slice(0, 3));
+  const [nearbyShops, setNearbyShops] = useState<any[]>([]);
+
+  //fetching all shops initially
+  useEffect(() => {
+    const fetchShops = async () => {
+      try {
+        const res = await fetch("/api/shops");
+        const data = await res.json();
+        setNearbyShops(data); // all shops initially
+      } catch (err) {
+        console.error("Failed to fetch shops", err);
+      }
+    };
+    fetchShops();
+  }, []);
 
   const handleMapClick = (location: string) => {
     setSelectedLocation(location);
     // Simulate finding nearby shops
-    const shuffled = [...mockShops].sort(() => 0.5 - Math.random());
+    const shuffled = [...nearbyShops].sort(() => 0.5 - Math.random());
     setNearbyShops(shuffled.slice(0, 3));
   };
 
@@ -122,7 +135,7 @@ export default function MapPage() {
             </CardContent>
           </Card>
 
-          {/* Results */}
+          {/* Results in grid*/}
           {selectedLocation && (
             <Card className="shadow-card animate-fade-in">
               <CardHeader>
@@ -135,12 +148,18 @@ export default function MapPage() {
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 gap-4">
-                  {nearbyShops.map((shop) => (
-                    <div key={shop.id} className="animate-scale-in">
-                      <ShopCard shop={shop} />
-                    </div>
-                  ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+                  {nearbyShops.length > 0 ? (
+                    nearbyShops.map((shop) => (
+                      <div key={shop.id} className="animate-scale-in">
+                        <ShopCard shop={shop} />
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-muted-foreground text-center py-6">
+                      No shops found nearby
+                    </p>
+                  )}
                 </div>
               </CardContent>
             </Card>

@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowLeft, Star, MapPin, IndianRupee, Calendar, User } from "lucide-react";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface ShopDetailClientProps {
   shop: {
@@ -40,9 +41,8 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
     Array.from({ length: 5 }, (_, i) => (
       <Star
         key={i}
-        className={`h-5 w-5 ${interactive ? "cursor-pointer hover:scale-110 transition-transform" : ""} ${
-          i < Math.floor(rating) ? "fill-secondary text-primary" : "fill-secondary/20 text-primary/40"
-        }`}
+        className={`h-5 w-5 ${interactive ? "cursor-pointer hover:scale-110 transition-transform" : ""} ${i < Math.floor(rating) ? "fill-secondary text-primary" : "fill-secondary/20 text-primary/40"
+          }`}
         onClick={() => interactive && onClick?.(i + 1)}
       />
     ));
@@ -52,18 +52,43 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
     if (newRating === 0 || !newComment.trim()) return;
 
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate API call
-    toast("Review Added! Thank you for sharing your experience.");
-    setNewRating(0);
-    setNewComment("");
-    setIsSubmitting(false);
+
+    //fetching review first
+    try {
+      const res = await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          shopId: shop.id,
+          rating: newRating,
+          comment: newComment
+        }),
+      });
+
+      if (!res.ok) {
+        toast.error("Failed to submit review")
+        setIsSubmitting(false);
+        return;
+      };
+
+      //message and reset form
+      toast.success("Review Added! Thank you for sharing your experience.");
+      setNewRating(0);
+      setNewComment("");
+      router.refresh();
+      setIsSubmitting(false);
+
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <div className="min-h-screen bg-background pb-24">
       {/* Hero Image */}
       <div className="relative h-64 overflow-hidden">
-        <img src={shop.image ?? "/assets/placeholder.svg"} alt={shop.name} className="h-full w-full object-cover" />
+        <Image priority={false} width={100}
+          height={100} src={shop.image ?? "/assets/placeholder.svg"} alt={shop.name} className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         <Button
           variant="ghost"
@@ -175,13 +200,15 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
                 />
               </div>
 
-              <Button
-                type="submit"
-                disabled={newRating === 0 || !newComment.trim() || isSubmitting}
-                className="w-full bg-gradient-fab hover:opacity-90 transition-opacity"
-              >
-                {isSubmitting ? "Submitting..." : "Submit Review"}
-              </Button>
+              <div className="w-full flex justify-center">
+                <Button
+                  type="submit"
+                  disabled={newRating === 0 || !newComment.trim() || isSubmitting}
+                  className="w-1/2 cursor-pointer bg-primary text-popover hover:opacity-90 transition-opacity"
+                >
+                  {isSubmitting ? "Submitting..." : "Submit Review"}
+                </Button>
+              </div>
             </form>
           </CardContent>
         </Card>

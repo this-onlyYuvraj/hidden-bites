@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
 import { getCurrentLocation } from "@/components/currentLocation";
 import { createShop } from "@/lib/create-shop";
+import Image from "next/image";
 
 export default function AddShopPage() {
   const router = useRouter();
@@ -35,10 +36,7 @@ export default function AddShopPage() {
     priceRange: "",
     location: "",
     description: "",
-    customType: "",
   });
-
-  const [showCustomType, setShowCustomType] = useState(false);
 
   // For image upload
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -65,10 +63,6 @@ export default function AddShopPage() {
 
   const handleInputChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
-
-    if (field === "type") {
-      setShowCustomType(value === "Others");
-    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,7 +87,7 @@ export default function AddShopPage() {
     );
 
     if (!res.ok) throw new Error("Failed to upload image");
-    
+
     const result = await res.json();
     return result.secure_url; // Cloudinary hosted image URL
   };
@@ -111,7 +105,6 @@ export default function AddShopPage() {
 
       const formData = new FormData();
       formData.append("name", form.name);
-      formData.append("type", showCustomType ? form.customType : form.type);
       formData.append("location", form.location || "");
       formData.append("speciality", form.speciality);
       formData.append("priceRange", form.priceRange);
@@ -171,7 +164,9 @@ export default function AddShopPage() {
                 />
                 {previewUrl && (
                   <div className="mt-3">
-                    <img
+                    <Image
+                      width={100}
+                      height={100}
                       src={previewUrl}
                       alt="Preview"
                       className="w-full h-48 object-cover rounded-lg border"
@@ -208,19 +203,6 @@ export default function AddShopPage() {
                       ))}
                     </SelectContent>
                   </Select>
-
-                  {showCustomType && (
-                    <div className="mt-2">
-                      <Input
-                        placeholder="Enter custom food type"
-                        value={form.customType}
-                        onChange={(e) =>
-                          handleInputChange("customType", e.target.value)
-                        }
-                        className="animate-fade-in"
-                      />
-                    </div>
-                  )}
                 </div>
 
                 <div className="space-y-2">

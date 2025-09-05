@@ -5,7 +5,7 @@ import { ShopCard } from "@/components/shop/ShopCard";
 import { Shop } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { SlidersHorizontal, Star, TrendingUp, Search } from "lucide-react";
+import { Star, TrendingUp, Search } from "lucide-react";
 
 type SortOption = "newest" | "topRated";
 
@@ -71,8 +71,8 @@ export default function ShopsPage() {
         </div>
       </div>
 
-      {/* Sort Controls */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6 px-4">
+      {/* Sort Controls and add btn*/}
+      <div className="flex justify-between flex-col md:flex-row gap-4 mb-6 px-4">
         <div className="flex gap-2">
           <Button
             variant={sortBy === "newest" ? "default" : "outline"}
@@ -87,6 +87,13 @@ export default function ShopsPage() {
             <Star className="h-4 w-4 mr-1" /> Top Rated
           </Button>
         </div>
+        <div>
+          <Button asChild>
+            <a href="/shop/add" className="px-4 py-4 text-md rounded-xl bg-primary hover:bg-primary/90 text-white shadow-md">
+              Add Shop
+            </a>
+          </Button>
+        </div>
       </div>
 
       {/* Shop Grid */}
@@ -94,23 +101,23 @@ export default function ShopsPage() {
         {isLoading
           ? Array.from({ length: 6 }).map((_, i) => <ShopCardSkeleton key={i} />)
           : filteredAndSortedShops.length === 0 ? (
-              <div className="col-span-full text-center py-12">
-                <p className="text-muted-foreground mb-2">No shops found</p>
-                <p className="text-sm text-muted-foreground">
-                  Try adjusting your search terms
-                </p>
+            <div className="col-span-full text-center py-12">
+              <p className="text-muted-foreground mb-2">No shops found</p>
+              <p className="text-sm text-muted-foreground">
+                Try adjusting your search terms
+              </p>
+            </div>
+          ) : (
+            filteredAndSortedShops.map((shop, i) => (
+              <div
+                key={shop.id}
+                className="animate-fade-in"
+                style={{ animationDelay: `${i * 0.1}s` }}
+              >
+                <ShopCard shop={shop} />
               </div>
-            ) : (
-              filteredAndSortedShops.map((shop, i) => (
-                <div
-                  key={shop.id}
-                  className="animate-fade-in"
-                  style={{ animationDelay: `${i * 0.1}s` }}
-                >
-                  <ShopCard shop={shop} />
-                </div>
-              ))
-            )}
+            ))
+          )}
       </div>
     </div>
   );

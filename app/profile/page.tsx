@@ -1,10 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
-import { mockShops } from "../../data/mockShops";
 import { Star, MapPin, Calendar } from "lucide-react";
 import { auth } from "@/auth";
 import PleaseLogin from "@/components/layout/PleaseLogin";
+import { prisma } from "@/lib/prisma";
+import Image from "next/image";
 
 export default async function ProfilePage() {
 
@@ -14,15 +15,19 @@ export default async function ProfilePage() {
       <PleaseLogin />
     )
   }
-  // Filter shops added by current user
-  const userShops = session?.user
-    ? mockShops.filter(shop => shop.addedBy === session.user?.name)
-    : [];
 
-  // Get user reviews (from mock data)
-  const userReviews = mockShops.flatMap(shop =>
-    (shop.reviews || []).filter(review => review.userName === "John D.")
-  );
+  //fetching the shops added by current user
+  const userShops = await prisma.shop.findMany({
+    where: { addedById: session.user?.id ?? "" },
+    include: { reviews: true },
+  });
+
+  //fetch reviews written by current user
+  const userReviews = await prisma.review.findMany({
+    where: { userId: session.user?.id ?? "" },
+    include: { shop: true },
+    orderBy: { createdAt: "desc" },
+  });
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
@@ -90,21 +95,34 @@ export default async function ProfilePage() {
             {userShops.length > 0 ? (
               userShops.map((shop) => (
                 <div key={shop.id} className="flex items-start gap-3 p-3 rounded-lg bg-secondary/20">
-                  <img
-                    src={shop.image}
+                  <Image
+                    priority={false}
+                    width={100}
+                    height={100}
+                    src={shop.image ?? "/assets/user.png"}
                     alt={shop.name}
                     className="h-12 w-12 rounded-lg object-cover"
                   />
                   <div className="flex-1 min-w-0">
                     <h3 className="font-medium truncate">{shop.name}</h3>
-                    <p className="text-sm text-muted-foreground truncate">{shop.specialty}</p>
+                    <p className="text-sm text-muted-foreground truncate">{shop.speciality}</p>
                     <div className="flex items-center gap-2 mt-1">
                       <Badge variant="secondary" className="text-xs">
                         {shop.type}
                       </Badge>
                       <div className="flex items-center gap-1">
-                        {renderStars(shop.rating)}
-                        <span className="text-xs">{shop.rating}</span>
+                        {renderStars(
+                          shop.reviews.length > 0
+                            ? shop.reviews.reduce((sum, r) => sum + r.rating, 0) / shop.reviews.length
+                            : 0
+                        )}
+                        <span className="text-xs">
+                          {shop.reviews.length > 0
+                            ? (
+                              shop.reviews.reduce((sum, r) => sum + r.rating, 0) / shop.reviews.length
+                            ).toFixed(1)
+                            : "0.0"}
+                        </span>
                       </div>
                     </div>
                   </div>

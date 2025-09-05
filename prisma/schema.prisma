@@ -55,8 +55,7 @@ model Account {
 model Shop {
   id           String    @id @default(cuid())
   name         String
-  type         String  
-  customType   String    
+  type         String   
   speciality    String
   priceRange   String    
   location     String?

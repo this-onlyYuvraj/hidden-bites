@@ -7,8 +7,9 @@ import { Roboto } from "next/font/google"
 import { auth } from "@/auth";
 import { Header } from "@/components/layout/Header"
 import { BottomNav } from "@/components/layout/BottomNav"
+import { GlobalLoader } from "@/components/GlobalLoader"
 
-const roboto = Roboto({ subsets: ['latin'], weight: ['400','500','700'] })
+const roboto = Roboto({ subsets: ['latin'], weight: ['400', '500', '700'] })
 
 export const metadata: Metadata = {
   title: "Hidden Bites - Discover Hidden Food Gems",
@@ -37,9 +38,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://foodspot.app",
-    siteName: "FoodSpot",
-    title: "FoodSpot - Discover Hidden Food Gems",
+    url: "https://HiddenBites.app",
+    siteName: "HiddenBites",
+    title: "HiddenBites - Discover Hidden Food Gems",
     description: "Find amazing food spots recommended by your community",
   },
   twitter: {
@@ -56,6 +57,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
 }
 
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   return (
@@ -65,9 +67,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <ClientProviders>
-          <Header session={session}/>
+          <GlobalLoader/>
+          <Header session={session} />
           {children}
-          <BottomNav/>
+          <BottomNav />
           <Sonner richColors position="top-right" />
         </ClientProviders>
       </body>

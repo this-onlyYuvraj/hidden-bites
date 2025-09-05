@@ -15,8 +15,9 @@ import HiddenBites from "@/public/assets/HB.png"
 
 import { logout } from "@/lib/auth-actions";
 import { Session } from "next-auth";
+import Image from "next/image";
 
-export function Header({ session }: {session:Session | null}) {
+export function Header({ session }: { session: Session | null }) {
 
   return (
     <header className="top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -28,19 +29,21 @@ export function Header({ session }: {session:Session | null}) {
               variant="ghost"
               className="flex items-center gap-2 text-xl font-bold text-primary hover:bg-transparent"
             >
-              <img
-                src={HiddenBites.src}
+              <Image
+                width={100}
+                height={100}
+                src={HiddenBites}
                 alt="Logo"
                 className="h-20 w-20 md:h-25 md:w-25" />
             </Button>
           </Link>
-          <h1 style={{fontFamily:"waterlily, sans-serif"}} className="text-3xl text-primary">Hidden Bites</h1>
+          <h1 style={{ fontFamily: "waterlily, sans-serif" }} className="text-3xl text-primary">Hidden Bites</h1>
         </div>
         {/* session Menu */}
         {session ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+              <Button variant="ghost" className="relative h-10 w-10 rounded-full cursor-pointer">
                 <Avatar className="h-11 w-11 md:h-15 md:w-15">
                   <AvatarImage
                     src={session.user?.image ?? undefined}
@@ -65,10 +68,10 @@ export function Header({ session }: {session:Session | null}) {
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                
-               <Link href={"/profile"}>
-                   Profile               
-               </Link>
+
+                <Link href={"/profile"}>
+                  Profile
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={logout}>
