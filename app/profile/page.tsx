@@ -1,7 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
-import { BottomNav } from "../../components/layout/BottomNav";
 import { mockShops } from "../../data/mockShops";
 import { Star, MapPin, Calendar } from "lucide-react";
 import { auth } from "@/auth";
@@ -156,8 +155,6 @@ export default async function ProfilePage() {
           </CardContent>
         </Card>
       </div>
-
-      <BottomNav />
     </div>
   );
 }

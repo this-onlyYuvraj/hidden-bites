@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { BottomNav } from "@/components/layout/BottomNav";
 import { mockShops, mockUser } from "@/data/mockShops";
 import { ArrowLeft, Star, MapPin, IndianRupee, Calendar, User } from "lucide-react";
 import { toast } from "sonner";
@@ -214,8 +213,6 @@ export default function ShopDetailsPage() {
           </Card>
         </div>
       </div>
-
-      <BottomNav />
     </div>
   );
 }

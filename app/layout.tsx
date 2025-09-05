@@ -6,6 +6,7 @@ import "./globals.css"
 import { Roboto } from "next/font/google"
 import { auth } from "@/auth";
 import { Header } from "@/components/layout/Header"
+import { BottomNav } from "@/components/layout/BottomNav"
 
 const roboto = Roboto({ subsets: ['latin'], weight: ['400','500','700'] })
 
@@ -66,6 +67,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ClientProviders>
           <Header session={session}/>
           {children}
+          <BottomNav/>
           <Sonner richColors position="top-right" />
         </ClientProviders>
       </body>

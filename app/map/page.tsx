@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
-import { BottomNav } from "../../components/layout/BottomNav";
 import { ShopCard } from "../../components/shop/ShopCard";
 import { mockShops } from "../../data/mockShops";
 import { ArrowLeft, MapPin, Navigation } from "lucide-react";
@@ -161,8 +160,6 @@ export default function MapPage() {
           )}
         </div>
       </div>
-
-      <BottomNav />
     </div>
   );
 }

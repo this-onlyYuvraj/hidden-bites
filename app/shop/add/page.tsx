@@ -18,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
-import { BottomNav } from "../../../components/layout/BottomNav";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
@@ -320,8 +319,6 @@ export default function AddShopPage() {
           </CardContent>
         </Card>
       </div>
-
-      <BottomNav />
     </div>
   );
 }

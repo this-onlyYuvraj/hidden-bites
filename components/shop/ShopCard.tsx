@@ -43,11 +43,11 @@ export function ShopCard({ shop }: ShopCardProps) {
       className="group cursor-pointer overflow-hidden bg-gradient-card shadow-card hover:shadow-lg transition-all duration-300 hover:scale-[1.02] animate-fade-in"
       onClick={() => router.push(`/shop/${shop.id}`)}
     >
-      <div className="aspect-[4/3] overflow-hidden">
+      <div className="aspect-[2/1]  overflow-hidden">
         <img
           src={shop.image}
           alt={shop.name}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="h-1/2 w-1/2 object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </div>
       
