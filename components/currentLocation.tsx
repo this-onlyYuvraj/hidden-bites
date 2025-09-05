@@ -15,6 +15,9 @@ export async function getCurrentLocation(): Promise<{ address: string; lat: numb
           );
           const data = await res.json();
 
+          console.log(data);
+          
+
           if (data.status === "OK" && data.results.length > 0) {
             let finalAddress = "Unknown Area";
 

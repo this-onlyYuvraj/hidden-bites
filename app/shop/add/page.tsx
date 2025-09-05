@@ -22,22 +22,28 @@ import { BottomNav } from "../../../components/layout/BottomNav";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
-import {getCurrentLocation} from "@/components/currentLocation"
+import { getCurrentLocation } from "@/components/currentLocation";
+import { createShop } from "@/lib/create-shop";
 
 export default function AddShopPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [formData, setFormData] = useState({
+  const [form, setForm] = useState({
     name: "",
     type: "",
-    specialty: "",
+    speciality: "",
     priceRange: "",
     location: "",
     description: "",
     customType: "",
   });
+
   const [showCustomType, setShowCustomType] = useState(false);
+
+  // For image upload
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const shopTypes = [
     "Food",
@@ -58,23 +64,76 @@ export default function AddShopPage() {
 
   const priceRanges = ["₹30-100", "₹100-200", "₹200-400", "₹400-800", "₹800+"];
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    toast.success("Shop Added Successfully!", {
-      description: `${formData.name} has been added to FoodSpot.`,
-    });
-
-    setIsSubmitting(false);
-    router.push("/");
-  };
-
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setForm((prev) => ({ ...prev, [field]: value }));
 
     if (field === "type") {
       setShowCustomType(value === "Others");
+    }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const uploadToCloudinary = async (file: File): Promise<string> => {
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
+
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+
+    if (!res.ok) throw new Error("Failed to upload image");
+    
+    const result = await res.json();
+    return result.secure_url; // Cloudinary hosted image URL
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      setIsSubmitting(true);
+
+      let imageUrl = "";
+      if (imageFile) {
+        imageUrl = await uploadToCloudinary(imageFile);
+      }
+
+      const formData = new FormData();
+      formData.append("name", form.name);
+      formData.append("type", showCustomType ? form.customType : form.type);
+      formData.append("location", form.location || "");
+      formData.append("speciality", form.speciality);
+      formData.append("priceRange", form.priceRange);
+      formData.append("description", form.description);
+      if (imageUrl) formData.append("image", imageUrl);
+
+      // calling backend util
+      await createShop(formData);
+
+      toast.success("Shop Added Successfully!", {
+        description: `${form.name} has been added to Hidden Bites.`,
+      });
+
+      router.push("/");
+    } catch (err: any) {
+      console.error("failed shop: ", err);
+      toast.error("Failed to add shop", {
+        description: err.message || "Something went wrong",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -86,9 +145,9 @@ export default function AddShopPage() {
             variant="ghost"
             size="sm"
             onClick={() => router.back()}
-            className="h-15 w-15 p-0"
+            className="h-10 w-10 p-0"
           >
-            <ArrowLeft className="h-15 w-15" />
+            <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-2xl font-bold">Add New Shop</h1>
         </div>
@@ -102,12 +161,32 @@ export default function AddShopPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Image uploading section */}
+              <div className="space-y-2">
+                <Label htmlFor="image">Shop Image (Optional)</Label>
+                <Input
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+                {previewUrl && (
+                  <div className="mt-3">
+                    <img
+                      src={previewUrl}
+                      alt="Preview"
+                      className="w-full h-48 object-cover rounded-lg border"
+                    />
+                  </div>
+                )}
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="name">Shop Name *</Label>
                 <Input
                   id="name"
                   placeholder="Enter shop name"
-                  value={formData.name}
+                  value={form.name}
                   onChange={(e) => handleInputChange("name", e.target.value)}
                   required
                 />
@@ -135,7 +214,7 @@ export default function AddShopPage() {
                     <div className="mt-2">
                       <Input
                         placeholder="Enter custom food type"
-                        value={formData.customType}
+                        value={form.customType}
                         onChange={(e) =>
                           handleInputChange("customType", e.target.value)
                         }
@@ -167,13 +246,13 @@ export default function AddShopPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="specialty">Specialty *</Label>
+                <Label htmlFor="speciality">Speciality *</Label>
                 <Input
-                  id="specialty"
+                  id="speciality"
                   placeholder="What are they famous for?"
-                  value={formData.specialty}
+                  value={form.speciality}
                   onChange={(e) =>
-                    handleInputChange("specialty", e.target.value)
+                    handleInputChange("speciality", e.target.value)
                   }
                   required
                 />
@@ -185,7 +264,7 @@ export default function AddShopPage() {
                   <Input
                     id="location"
                     placeholder="Area, City"
-                    value={formData.location}
+                    value={form.location}
                     onChange={(e) =>
                       handleInputChange("location", e.target.value)
                     }
@@ -219,7 +298,7 @@ export default function AddShopPage() {
                 <Textarea
                   id="description"
                   placeholder="Tell us more about this place..."
-                  value={formData.description}
+                  value={form.description}
                   onChange={(e) =>
                     handleInputChange("description", e.target.value)
                   }
@@ -227,14 +306,16 @@ export default function AddShopPage() {
                 />
               </div>
 
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full text-black bg-gradient-fab hover:opacity-90 transition-opacity"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Adding Shop..." : "Add Shop"}
-              </Button>
+              <div className="flex justify-center">
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-1/2 cursor-pointer text-black bg-gradient-fab bg-primary hover:opacity-90 transition-opacity"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Adding Shop..." : "Add Shop"}
+                </Button>
+              </div>
             </form>
           </CardContent>
         </Card>

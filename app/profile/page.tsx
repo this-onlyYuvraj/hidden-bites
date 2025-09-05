@@ -5,26 +5,17 @@ import { BottomNav } from "../../components/layout/BottomNav";
 import { mockShops } from "../../data/mockShops";
 import { Star, MapPin, Calendar } from "lucide-react";
 import { auth } from "@/auth";
-import Link from "next/link";
+import PleaseLogin from "@/components/layout/PleaseLogin";
 
 export default async function ProfilePage() {
-  // Filter shops added by current user
+
   const session = await auth();
-  if(!session){
+  if (!session) {
     return (
-      <div className="flex justify-center flex-col text-center items-center">
-        <p className="text-center text-2xl">Please login first</p>
-        <div className="px-5 py-5 bg-primary text-white text-2xl w-20">
-          <div>
-            <Link className="text-center" href={"/login"}>
-            Login
-          </Link>
-          </div>
-        </div>
-      </div>
+      <PleaseLogin />
     )
   }
-
+  // Filter shops added by current user
   const userShops = session?.user
     ? mockShops.filter(shop => shop.addedBy === session.user?.name)
     : [];
@@ -39,8 +30,8 @@ export default async function ProfilePage() {
       <Star
         key={i}
         className={`h-3 w-3 ${i < Math.floor(rating)
-            ? "fill-food-rating text-food-rating"
-            : "fill-muted-foreground/20 text-muted-foreground/40"
+          ? "fill-food-rating text-food-rating"
+          : "fill-muted-foreground/20 text-muted-foreground/40"
           }`}
       />
     ));

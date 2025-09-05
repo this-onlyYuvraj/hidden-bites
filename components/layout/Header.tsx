@@ -34,7 +34,7 @@ export function Header({ session }: {session:Session | null}) {
                 className="h-20 w-20 md:h-25 md:w-25" />
             </Button>
           </Link>
-          <h1 style={{fontFamily:"waterlily, sans-serif"}} className="text-2xl text-primary">Hidden Bites</h1>
+          <h1 style={{fontFamily:"waterlily, sans-serif"}} className="text-3xl text-primary">Hidden Bites</h1>
         </div>
         {/* session Menu */}
         {session ? (
@@ -79,7 +79,7 @@ export function Header({ session }: {session:Session | null}) {
           </DropdownMenu>
         ) : (
           <Link href="/login">
-            <Button variant="default">
+            <Button variant="default" className="text-white">
               Sign In
             </Button>
           </Link>

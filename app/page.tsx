@@ -9,6 +9,7 @@ import { BottomNav } from "../components/layout/BottomNav";
 import { ShopCard } from "../components/shop/ShopCard";
 import { mockShops } from "../data/mockShops";
 import { SlidersHorizontal, Star, TrendingUp, Search } from "lucide-react";
+import Link from "next/link";
 
 type SortOption = "newest" | "topRated";
 
@@ -37,10 +38,10 @@ export default function HomePage() {
 
   const handleSortChange = (newSort: SortOption) => {
     if (newSort === sortBy) return;
-    
+
     setIsLoading(true);
     setSortBy(newSort);
-    
+
     // Simulate loading
     setTimeout(() => setIsLoading(false), 500);
   };
@@ -68,7 +69,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      
+
       <div className="pb-24">
         {/* Search Bar - Sticky on mobile */}
         <div className="sticky top-0 z-30 bg-background/95 backdrop-blur-sm border-b border-border/50 mb-2">
@@ -88,15 +89,22 @@ export default function HomePage() {
         <div className="container px-4 py-6 space-y-6">
           {/* Welcome Header */}
           <Card className="bg-gradient-card shadow-card">
-            <CardHeader>
-              <CardTitle className="text-2xl">
-                Discover Hidden Gems
-              </CardTitle>
-              <p className="text-muted-foreground">
-                Find amazing food spots recommended by your community
-              </p>
-            </CardHeader>
+            <div className="flex items-center justify-between p-6">
+              <div>
+                <CardTitle className="text-2xl">Discover Hidden Gems</CardTitle>
+                <p className="text-muted-foreground">
+                  Find amazing food spots recommended by your community
+                </p>
+              </div>
+
+              <Link href="/shop/add">
+                <Button className="px-4 py-6 text-lg cursor-pointer rounded-xl bg-primary hover:bg-primary/90 text-white shadow-md">
+                  Add Shop
+                </Button>
+              </Link>
+            </div>
           </Card>
+
 
           {/* Sort Controls */}
           <Card className="shadow-card">
@@ -144,8 +152,8 @@ export default function HomePage() {
               </div>
             ) : (
               filteredAndSortedShops.map((shop, index) => (
-                <div 
-                  key={shop.id} 
+                <div
+                  key={shop.id}
                   className="animate-fade-in"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >

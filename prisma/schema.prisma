@@ -57,14 +57,13 @@ model Shop {
   name         String
   type         String  
   customType   String    
-  specialty    String
+  speciality    String
   priceRange   String    
-  location     String
-  latitude     Float?
-  longitude    Float?
+  location     String?
   addedBy      User      @relation("UserShops", fields: [addedById], references: [id])
   addedById    String
   reviews      Review[]  @relation("ShopReviews")
+  image       String?   // URL to the image
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 }
