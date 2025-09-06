@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,12 +36,22 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
   const [newRating, setNewRating] = useState(0);
   const [newComment, setNewComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+
+  //sorted reviews
+  const sortedReviews = useMemo(() => {
+    return [...shop.reviews].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }, [shop.reviews]);
+
+  const reviewsToShow = showAll ? sortedReviews : sortedReviews.slice(0, 4);
 
   const renderStars = (rating: number, interactive = false, onClick?: (rating: number) => void) =>
     Array.from({ length: 5 }, (_, i) => (
       <Star
         key={i}
-        className={`h-5 w-5 ${interactive ? "cursor-pointer hover:scale-110 transition-transform" : ""} ${i < Math.floor(rating) ? "fill-secondary text-primary" : "fill-secondary/20 text-primary/40"
+        className={`h-5 w-5 ${interactive ? "cursor-pointer hover:scale-110 transition-transform hover:fill-secondary" : ""} ${i < Math.floor(rating) ? "fill-secondary text-primary " : "fill-secondary/20 text-primary/40"
           }`}
         onClick={() => interactive && onClick?.(i + 1)}
       />
@@ -81,6 +91,7 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
     } catch (error) {
       console.error(error);
     }
+
   };
 
   return (
@@ -135,39 +146,71 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Star className="h-5 w-5" /> Reviews ({shop.reviews.length})
+
+
             </CardTitle>
+            <div className="flex justify-end mt-[-25px] font-bold">
+              {sortedReviews.length > 3 && (
+                <button
+                  onClick={() => setShowAll(!showAll)}
+                  className="text-sm text-primary hover:underline"
+                >
+                  {showAll ? "See less" : "See more"}
+                </button>
+              )}
+            </div>
           </CardHeader>
+
           <CardContent className="space-y-4">
-            {shop.reviews.length > 0 ? (
-              shop.reviews.map((review) => (
-                <div key={review.id} className="p-4 rounded-lg bg-secondary/20 space-y-3">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-8 w-8">
-                        {review.user.image ? (
-                          <AvatarImage src={review.user.image} alt={review.user.name} />
-                        ) : (
-                          <AvatarFallback className="bg-primary text-primary-foreground text-sm">
-                            {review.user.name.charAt(0)}
-                          </AvatarFallback>
-                        )}
-                      </Avatar>
-                      <div>
-                        <p className="font-medium">{review.user.name}</p>
-                        <div className="flex items-center gap-1">
-                          {renderStars(review.rating)}
-                          <span className="text-sm ml-1">{review.rating}/5</span>
+            {sortedReviews.length > 0 ? (
+              <>
+                {reviewsToShow.map((review) => (
+                  <div
+                    key={review.id}
+                    className="p-4 rounded-lg bg-secondary/20 space-y-3"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-8 w-8">
+                          {review.user?.image ? (
+                            <AvatarImage
+                              src={review.user.image}
+                              alt={review.user?.name ?? "User"}
+                            />
+                          ) : (
+                            <AvatarFallback className="bg-primary text-primary-foreground text-sm">
+                              {review.user?.name?.charAt(0).toUpperCase() ?? "?"}
+                            </AvatarFallback>
+                          )}
+                        </Avatar>
+
+                        <div>
+                          <p className="font-medium">{review.user?.name ?? "User"}</p>
+                          <div className="flex items-center gap-1">
+                            {/* assuming renderStars is available */}
+                            {renderStars(review.rating)}
+                            <span className="text-sm ml-1">{review.rating}/5</span>
+                          </div>
                         </div>
                       </div>
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Calendar className="h-3 w-3" />
+                        {new Date(review.createdAt).toLocaleDateString()}
+                      </div>
                     </div>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <Calendar className="h-3 w-3" />
-                      {new Date(review.createdAt).toLocaleDateString()}
-                    </div>
+                    <p className="text-sm">{review.comment}</p>
                   </div>
-                  <p className="text-sm">{review.comment}</p>
-                </div>
-              ))
+                ))}
+
+                {sortedReviews.length > 4 && (
+                  <button
+                    onClick={() => setShowAll(!showAll)}
+                    className="text-sm text-primary hover:underline"
+                  >
+                    {showAll ? "See less" : "See more"}
+                  </button>
+                )}
+              </>
             ) : (
               <div className="text-center py-8 text-muted-foreground">
                 <Star className="h-12 w-12 mx-auto mb-3 opacity-50" />

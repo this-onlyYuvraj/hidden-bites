@@ -48,7 +48,7 @@
 :root {
   --radius: 0.625rem;
 
-  --background: #fffceb;
+  --background: #fcf5cd;
   --foreground: #1a1a1a;
 
   --primary: #FF9B00;
@@ -82,6 +82,7 @@
   --sidebar-accent-foreground: #1a1a1a;
   --sidebar-border: #e0e0e0;
   --sidebar-ring: #ff9b00;
+  --food-rating:#FFC900;
 }
 
 /* 🌙 Dark mode */

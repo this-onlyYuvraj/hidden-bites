@@ -8,6 +8,7 @@ import { auth } from "@/auth";
 import { Header } from "@/components/layout/Header"
 import { BottomNav } from "@/components/layout/BottomNav"
 import { GlobalLoader } from "@/components/GlobalLoader"
+import { ThemeProvider } from "next-themes"
 
 const roboto = Roboto({ subsets: ['latin'], weight: ['400', '500', '700'] })
 
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://HiddenBites.app",
+    url: "https://HiddenBites.app", // change after production
     siteName: "HiddenBites",
     title: "HiddenBites - Discover Hidden Food Gems",
     description: "Find amazing food spots recommended by your community",
@@ -57,21 +58,22 @@ export const viewport: Viewport = {
   maximumScale: 1,
 }
 
-
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   return (
-    <html lang="en" className={roboto.className}>
+    <html lang="en" className={roboto.className} suppressHydrationWarning>
       <head>
         <link rel="canonical" href="https://hiddenbites.app" />
       </head>
       <body>
         <ClientProviders>
-          <GlobalLoader/>
-          <Header session={session} />
-          {children}
-          <BottomNav />
-          <Sonner richColors position="top-right" />
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <GlobalLoader />
+            <Header session={session} />
+            {children}
+            <BottomNav />
+            <Sonner richColors position="top-right" />
+          </ThemeProvider>
         </ClientProviders>
       </body>
     </html>

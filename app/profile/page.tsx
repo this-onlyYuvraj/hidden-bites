@@ -151,9 +151,9 @@ export default async function ProfilePage() {
               userReviews.map((review) => (
                 <div key={review.id} className="p-3 rounded-lg bg-secondary/20 space-y-2">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 fill-food-rating">
                       {renderStars(review.rating)}
-                      <span className="text-sm font-medium ml-1">{review.rating}/5</span>
+                      <span className="text-sm font-medium ml-1 ">{review.rating}/5</span>
                     </div>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Calendar className="h-3 w-3" />
