@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowLeft, Star, MapPin, IndianRupee, Calendar, User } from "lucide-react";
+import { ArrowLeft, Star, MapPin, Calendar, User } from "lucide-react";
 import { toast } from "sonner";
 import Image from "next/image";
 
@@ -20,6 +20,7 @@ interface ShopDetailClientProps {
     speciality: string;
     priceRange: string;
     location?: string | null;
+    reviewCount: number | null ;
     addedBy: { name: string; image?: string | null };
     reviews: {
       id: string;
@@ -28,6 +29,7 @@ interface ShopDetailClientProps {
       createdAt: Date;
       user: { name: string; image?: string | null };
     }[];
+    rating: number;
   };
 }
 
@@ -94,6 +96,7 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
 
   };
 
+
   return (
     <div className="min-h-screen bg-background pb-24">
       {/* Hero Image */}
@@ -113,8 +116,8 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
 
       <div className="container px-4 py-6 space-y-6">
         {/* Shop Info */}
-        <Card className="shadow-card -mt-16 relative z-10">
-          <CardContent className="pt-6 space-y-4">
+        <Card className="shadow-card -mt-20 relative z-10">
+          <CardContent className="pt-6 text-primary space-y-4">
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <h1 className="text-2xl font-bold">{shop.name}</h1>
@@ -123,14 +126,20 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
               <Badge variant="secondary">{shop.type}</Badge>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 pt-2">
+            <div className="grid text-primary grid-cols-2 gap-4 pt-2">
               <div className="flex items-center gap-2 text-food-location">
                 <MapPin className="h-4 w-4" />
                 <span className="text-sm">{shop.location || "Not specified"}</span>
               </div>
-              <div className="flex items-center gap-2 text-food-price">
-                <IndianRupee className="h-4 w-4" />
-                <span className="text-sm font-medium">{shop.priceRange}</span>
+              <div className="flex items-center justify-evenly text-food-price">
+                <div>
+                  <span className="text-sm font-medium">Price Range:&nbsp; &nbsp;</span>
+                  <span className="text-sm font-medium">{shop.priceRange}</span>
+                </div>
+                <div>
+                  <span>Rating: &nbsp; &nbsp; </span>
+                  <span>{shop.rating ?? "0.0"}</span>
+                </div>
               </div>
             </div>
 

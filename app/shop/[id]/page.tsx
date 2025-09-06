@@ -33,6 +33,11 @@ export default async function ShopPage({ params }: ShopPageProps) {
         image: r.user.image ?? null,
       },
     })),
+    reviewCount: shop.reviews.length,
+  rating:
+    shop.reviews.length > 0
+      ? shop.reviews.reduce((sum, r) => sum + r.rating, 0) / shop.reviews.length
+      : 0,
   };
 
   return <ShopDetailClient shop={safeShop} />;

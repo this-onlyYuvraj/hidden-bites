@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { SlidersHorizontal, Star, TrendingUp, Search } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BottomNav } from "@/components/layout/BottomNav";
+import Link from "next/link";
 
 type SortOption = "newest" | "topRated";
 
@@ -80,7 +81,7 @@ export default function HomePage() {
       <div className="container px-4 py-6 space-y-6">
         {/* Header */}
         <Card className="bg-gradient-card shadow-card">
-          <div className="flex items-center justify-between p-6">
+          <div className="flex items-center justify-between px-6 py-1">
             <div>
               <CardTitle className="text-2xl">Discover Hidden Gems</CardTitle>
               <p className="text-muted-foreground">
@@ -88,9 +89,9 @@ export default function HomePage() {
               </p>
             </div>
             <Button asChild>
-              <a href="/shop/add" className="px-4 py-6 text-lg rounded-xl bg-primary hover:bg-primary/90 text-white shadow-md">
+              <Link href="/shop/add" className="px-4 py-6 text-lg rounded-xl bg-primary hover:bg-primary/90 text-white shadow-md">
                 Add Shop
-              </a>
+              </Link>
             </Button>
           </div>
         </Card>

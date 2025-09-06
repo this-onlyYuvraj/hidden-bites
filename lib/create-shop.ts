@@ -15,7 +15,6 @@ export async function createShop(formData: FormData) {
   const location = formData.get("location")?.toString() || "";
   const speciality = formData.get("speciality")?.toString()
   const priceRange = formData.get("priceRange")?.toString()
-  const customType = formData.get("customType")?.toString() || ""
   const image = formData.get("image")?.toString() || "";
 
 
@@ -28,7 +27,6 @@ export async function createShop(formData: FormData) {
         name,
         location,
         type,
-        customType,
         priceRange,
         speciality,
         addedById: session.user.id,

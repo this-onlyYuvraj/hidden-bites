@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Star, IndianRupee } from "lucide-react";
+import { MapPin, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -40,7 +40,7 @@ export function ShopCard({ shop }: ShopCardProps) {
       <Star
         key={i}
         className={`h-4 w-4 ${i < Math.floor(rating)
-            ? "fill-food-rating text-food-rating"
+            ? "fill-primary text-primary text-food-rating"
             : "fill-muted-foreground/20 text-muted-foreground/40"
           }`}
       />
@@ -76,12 +76,12 @@ export function ShopCard({ shop }: ShopCardProps) {
           </Badge>
         </div>
 
-        {/* <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1">
           {renderStars(shop.rating)}
           <span className="text-sm font-medium ml-1">
             {shop.rating.toFixed(1)} ({shop.reviewCount})
           </span>
-        </div> */}
+        </div>
 
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center gap-1 text-food-location">

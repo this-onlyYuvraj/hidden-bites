@@ -6,6 +6,7 @@ import { Shop } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Star, TrendingUp, Search } from "lucide-react";
+import Link from "next/link";
 
 type SortOption = "newest" | "topRated";
 
@@ -89,9 +90,9 @@ export default function ShopsPage() {
         </div>
         <div>
           <Button asChild>
-            <a href="/shop/add" className="px-4 py-4 text-md rounded-xl bg-primary hover:bg-primary/90 text-white shadow-md">
+            <Link href="/shop/add" className="px-4 py-4 text-md rounded-xl bg-primary hover:bg-primary/90 text-white shadow-md">
               Add Shop
-            </a>
+            </Link>
           </Button>
         </div>
       </div>

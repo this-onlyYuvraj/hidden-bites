@@ -131,7 +131,7 @@ export default async function ProfilePage() {
             ) : (
               <div className="text-center py-8 text-muted-foreground">
                 <MapPin className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                <p>You haven't added any shops yet</p>
+                <p>You haven&apos;t added any shops yet</p>
                 <p className="text-sm">Share your favorite food spots with the community!</p>
               </div>
             )}

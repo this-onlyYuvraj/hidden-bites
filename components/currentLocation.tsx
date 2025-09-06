@@ -60,6 +60,7 @@ export async function getCurrentLocation(): Promise<{ address: string; lat: numb
           }
         } catch (err) {
           reject("Failed to fetch address");
+          console.error("error: ",err)
         }
       },
       (error) => {
