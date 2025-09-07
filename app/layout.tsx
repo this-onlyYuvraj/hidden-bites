@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://HiddenBites.app", // change after production
+    url: "https://hidden-bites.vercel.app", 
     siteName: "HiddenBites",
     title: "HiddenBites - Discover Hidden Food Gems",
     description: "Find amazing food spots recommended by your community",
@@ -68,7 +68,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className={roboto.className} suppressHydrationWarning>
       <head>
-        <link rel="canonical" href="https://hiddenbites.app" />
+        <link rel="canonical" href="https://hidden-bites.vercel.app" />
       </head>
       <body>
         <ClientProviders>

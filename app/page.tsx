@@ -9,6 +9,7 @@ import { SlidersHorizontal, Star, TrendingUp, Search } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BottomNav } from "@/components/layout/BottomNav";
 import Link from "next/link";
+import Footer from "@/components/layout/credits";
 
 type SortOption = "newest" | "topRated";
 
@@ -173,7 +174,7 @@ export default function HomePage() {
           </CardContent>
         </Card>
       </div>
-
+      <Footer/>
       <BottomNav />
     </div>
   );
