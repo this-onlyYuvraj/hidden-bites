@@ -115,7 +115,10 @@ export default function AddShopPage() {
 
       const formData = new FormData();
       formData.append("name", form.name);
-      formData.append("type", form.type === "Others" ? form.customType : form.type);
+      formData.append(
+        "type",
+        form.type === "Others" ? form.customType : form.type
+      );
       formData.append("location", form.location || "");
       formData.append("speciality", form.speciality);
       formData.append("priceRange", form.priceRange);
@@ -124,13 +127,18 @@ export default function AddShopPage() {
       formData.append("longitude", form.lng.toString());
       if (imageUrl) formData.append("image", imageUrl);
 
-      await createShop(formData);
+      const res = await createShop(formData);
+      if (!res.success) {
+        toast.error("Failed to add shop", {
+          description: res.error,
+        });
+        return;
+      }
       toast.success("Shop Added Successfully!", {
         description: `${form.name} has been added to Hidden Bites.`,
       });
       router.push("/");
     } catch (err: any) {
-      console.error("failed shop: ", err);
       toast.error("Failed to add shop", {
         description: err.message || "Something went wrong",
       });

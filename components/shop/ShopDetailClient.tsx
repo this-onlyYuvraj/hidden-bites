@@ -169,7 +169,7 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
                 </div>
                 <div>
                   <span>Rating: &nbsp; &nbsp; </span>
-                  <span>{shop.rating ?? "0.0"}</span>
+                  <span>{shop.rating.toFixed(1) ?? "0.0"}</span>
                 </div>
               </div>
             </div>

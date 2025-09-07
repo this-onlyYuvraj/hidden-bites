@@ -57,7 +57,7 @@ export function ShopCard({ shop }: ShopCardProps) {
       <div className="aspect-[16/9] sm:aspect-[2/1] overflow-hidden">
         <img
           loading="lazy"
-          src={shop.image ?? "/assets/placeholder.svg"}
+          src={shop.image ?? "public/assets/placeholder.svg"}
           alt={shop.name}
           className="h-full w-full object-cover transition-transform 
                      duration-300 group-hover:scale-105"
