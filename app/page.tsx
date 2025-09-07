@@ -89,7 +89,7 @@ export default function HomePage() {
               </p>
             </div>
             <Button asChild>
-              <Link href="/shop/add" className="px-4 py-6 text-lg rounded-xl bg-primary hover:bg-primary/90 text-white shadow-md">
+              <Link href="/shop/add" className="px-4 py-6 text-lg rounded-xl bg-primary hover:bg-primary/90 text-black shadow-md">
                 Add Shop
               </Link>
             </Button>

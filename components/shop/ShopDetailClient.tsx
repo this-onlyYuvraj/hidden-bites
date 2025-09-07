@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowLeft, Star, MapPin, Calendar, User } from "lucide-react";
 import { toast } from "sonner";
-import Image from "next/image";
+import DirectionsButton from "../GetDirection";
 
 interface ShopDetailClientProps {
   shop: {
@@ -20,7 +20,7 @@ interface ShopDetailClientProps {
     speciality: string;
     priceRange: string;
     location?: string | null;
-    reviewCount: number | null ;
+    reviewCount: number | null;
     addedBy: { name: string; image?: string | null };
     reviews: {
       id: string;
@@ -30,6 +30,8 @@ interface ShopDetailClientProps {
       user: { name: string; image?: string | null };
     }[];
     rating: number;
+    lat: number | null;
+    lng: number | null;
   };
 }
 
@@ -43,18 +45,30 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
   //sorted reviews
   const sortedReviews = useMemo(() => {
     return [...shop.reviews].sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
   }, [shop.reviews]);
 
   const reviewsToShow = showAll ? sortedReviews : sortedReviews.slice(0, 4);
 
-  const renderStars = (rating: number, interactive = false, onClick?: (rating: number) => void) =>
+  const renderStars = (
+    rating: number,
+    interactive = false,
+    onClick?: (rating: number) => void
+  ) =>
     Array.from({ length: 5 }, (_, i) => (
       <Star
         key={i}
-        className={`h-5 w-5 ${interactive ? "cursor-pointer hover:scale-110 transition-transform hover:fill-secondary" : ""} ${i < Math.floor(rating) ? "fill-secondary text-primary " : "fill-secondary/20 text-primary/40"
-          }`}
+        className={`h-5 w-5 ${
+          interactive
+            ? "cursor-pointer hover:scale-110 transition-transform hover:fill-secondary"
+            : ""
+        } ${
+          i < Math.floor(rating)
+            ? "fill-secondary text-primary "
+            : "fill-secondary/20 text-primary/40"
+        }`}
         onClick={() => interactive && onClick?.(i + 1)}
       />
     ));
@@ -73,15 +87,15 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
         body: JSON.stringify({
           shopId: shop.id,
           rating: newRating,
-          comment: newComment
+          comment: newComment,
         }),
       });
 
       if (!res.ok) {
-        toast.error("Failed to submit review")
+        toast.error("Failed to submit review");
         setIsSubmitting(false);
         return;
-      };
+      }
 
       //message and reset form
       toast.success("Review Added! Thank you for sharing your experience.");
@@ -89,20 +103,23 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
       setNewComment("");
       router.refresh();
       setIsSubmitting(false);
-
     } catch (error) {
       console.error(error);
     }
-
   };
-
 
   return (
     <div className="min-h-screen bg-background pb-24">
       {/* Hero Image */}
       <div className="relative h-64 overflow-hidden">
-        <Image priority={false} width={100}
-          height={100} src={shop.image ?? "/assets/placeholder.svg"} alt={shop.name} className="h-full w-full object-cover" />
+        <img
+          loading="lazy"
+          width={100}
+          height={100}
+          src={shop.image ?? "/assets/placeholder.svg"}
+          alt={shop.name}
+          className="h-full w-full object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         <Button
           variant="ghost"
@@ -121,19 +138,33 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <h1 className="text-2xl font-bold">{shop.name}</h1>
-                <p className="text-lg text-muted-foreground">{shop.speciality}</p>
+                <p className="text-lg text-muted-foreground">
+                  {shop.speciality}
+                </p>
               </div>
               <Badge variant="secondary">{shop.type}</Badge>
             </div>
 
             <div className="grid text-primary grid-cols-2 gap-4 pt-2">
-              <div className="flex items-center gap-2 text-food-location">
-                <MapPin className="h-4 w-4" />
-                <span className="text-sm">{shop.location || "Not specified"}</span>
+              <div className="flex flex-col gap-2 pt-2">
+                <div className="flex items-center gap-2 text-food-location">
+                  <MapPin className="h-4 w-4" />
+                  <span className="text-sm">
+                    {shop.location || "Not specified"}
+                  </span>
+                </div>
+                {shop.location && shop.lat && shop.lng && (
+                  <DirectionsButton
+                    destination={{ lat: shop.lat, lng: shop.lng }}
+                    label="Get Directions"
+                  />
+                )}
               </div>
               <div className="flex items-center justify-evenly text-food-price">
                 <div>
-                  <span className="text-sm font-medium">Price Range:&nbsp; &nbsp;</span>
+                  <span className="text-sm font-medium">
+                    Price Range:&nbsp; &nbsp;
+                  </span>
                   <span className="text-sm font-medium">{shop.priceRange}</span>
                 </div>
                 <div>
@@ -155,8 +186,6 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Star className="h-5 w-5" /> Reviews ({shop.reviews.length})
-
-
             </CardTitle>
             <div className="flex justify-end mt-[-25px] font-bold">
               {sortedReviews.length > 3 && (
@@ -188,17 +217,22 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
                             />
                           ) : (
                             <AvatarFallback className="bg-primary text-primary-foreground text-sm">
-                              {review.user?.name?.charAt(0).toUpperCase() ?? "?"}
+                              {review.user?.name?.charAt(0).toUpperCase() ??
+                                "?"}
                             </AvatarFallback>
                           )}
                         </Avatar>
 
                         <div>
-                          <p className="font-medium">{review.user?.name ?? "User"}</p>
+                          <p className="font-medium">
+                            {review.user?.name ?? "User"}
+                          </p>
                           <div className="flex items-center gap-1">
                             {/* assuming renderStars is available */}
                             {renderStars(review.rating)}
-                            <span className="text-sm ml-1">{review.rating}/5</span>
+                            <span className="text-sm ml-1">
+                              {review.rating}/5
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -224,7 +258,9 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
               <div className="text-center py-8 text-muted-foreground">
                 <Star className="h-12 w-12 mx-auto mb-3 opacity-50" />
                 <p>No reviews yet</p>
-                <p className="text-sm">Be the first to share your experience!</p>
+                <p className="text-sm">
+                  Be the first to share your experience!
+                </p>
               </div>
             )}
           </CardContent>
@@ -239,7 +275,9 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
             <form onSubmit={handleSubmitReview} className="space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Rating</label>
-                <div className="flex items-center gap-1">{renderStars(newRating, true, setNewRating)}</div>
+                <div className="flex items-center gap-1">
+                  {renderStars(newRating, true, setNewRating)}
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -255,7 +293,9 @@ export default function ShopDetailClient({ shop }: ShopDetailClientProps) {
               <div className="w-full flex justify-center">
                 <Button
                   type="submit"
-                  disabled={newRating === 0 || !newComment.trim() || isSubmitting}
+                  disabled={
+                    newRating === 0 || !newComment.trim() || isSubmitting
+                  }
                   className="w-1/2 cursor-pointer bg-primary text-popover hover:opacity-90 transition-opacity"
                 >
                   {isSubmitting ? "Submitting..." : "Submit Review"}

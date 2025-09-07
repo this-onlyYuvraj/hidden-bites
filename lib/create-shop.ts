@@ -16,9 +16,11 @@ export async function createShop(formData: FormData) {
   const speciality = formData.get("speciality")?.toString()
   const priceRange = formData.get("priceRange")?.toString()
   const image = formData.get("image")?.toString() || "";
+  const latitude = parseFloat(formData.get("latitude") as string) ;
+  const longitude = parseFloat(formData.get("longitude") as string);
 
 
-  if (!name || !location || !type || !description || !speciality ||!priceRange || !image) {
+  if (!name || !type || !speciality || !priceRange) {
     throw new Error("All Fields are Required")
   }
 
@@ -28,9 +30,12 @@ export async function createShop(formData: FormData) {
         location,
         type,
         priceRange,
+        description,
         speciality,
         addedById: session.user.id,
         image,
+        latitude,
+        longitude,
     }
   })
 }

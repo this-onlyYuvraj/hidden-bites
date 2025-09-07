@@ -59,6 +59,9 @@ model Shop {
   speciality    String
   priceRange   String    
   location     String?
+  latitude     Float?
+  longitude    Float?
+  description  String?
   addedBy      User      @relation("UserShops", fields: [addedById], references: [id])
   addedById    String
   reviews      Review[]  @relation("ShopReviews")

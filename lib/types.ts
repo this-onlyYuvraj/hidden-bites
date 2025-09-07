@@ -22,4 +22,6 @@ export interface Shop {
   reviews: Review[];
   rating: number;
   reviewCount: number;
+  lat: number | null;
+  lng: number | null;
 }

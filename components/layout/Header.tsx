@@ -15,7 +15,6 @@ import HiddenBites from "@/public/assets/HB.png";
 
 import { logout } from "@/lib/auth-actions";
 import { Session } from "next-auth";
-import Image from "next/image";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -30,30 +29,24 @@ export function Header({ session }: { session: Session | null }) {
     <header className="top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between pr-4 pt-5 mb-5">
         {/* Logo */}
-        <div className="flex gap-8">
+        <div className="flex justify-center items-center gap-2 md:gap-10">
           <Link href="/">
-            <Button
-              variant="ghost"
-              className="flex items-center gap-2 text-xl font-bold text-primary hover:bg-transparent"
-            >
-              <Image
-                width={100}
-                height={100}
-                src={HiddenBites}
+            <div>
+              <img
+                src={HiddenBites.src}
                 alt="Logo"
-                className="h-20 w-20 md:h-25 md:w-25"
+                className="h-20 w-20 mt-5 md:h-25 md:w-25"
               />
-            </Button>
+            </div>
           </Link>
           <h1
-            style={{ fontFamily: "waterlily, sans-serif" }}
-            className="text-3xl text-primary"
+            className="text-3xl text-primary font-brand md:text-4xl"
           >
             Hidden Bites
           </h1>
         </div>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-1 md:gap-6">
           {/* Theme Toggle */}
           {mounted && (
             <Button

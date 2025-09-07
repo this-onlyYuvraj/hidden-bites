@@ -24,8 +24,8 @@ export default function LoginPage() {
         <div className="relative flex h-full items-center justify-center px-4">
           <div className="text-center ">
             <div className="flex items-center justify-center gap-3 mb-6">
-              <Image src={HB.src} alt="Logo" className="w-25 h-25 mb-[-15px]" />
-              <h1 className="text-5xl text-primary" style={{fontFamily:"waterlily"}}>HiddenBites</h1>
+              <div><Image src={HB.src} alt="Logo" width={100} height={100} /></div>
+              <h1 className="text-5xl text-primary font-brand" >HiddenBites</h1>
             </div>
             <p className="text-lg  max-w-md mb-15">
               Discover hidden gems and underrated food spots in your

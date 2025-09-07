@@ -1,16 +1,17 @@
 // app/layout.tsx
-import type { Metadata, Viewport } from "next"
-import { Toaster as Sonner } from "@/components/ui/sonner"
-import ClientProviders from "@/components/client-providers"
-import "./globals.css"
-import { Roboto } from "next/font/google"
+import type { Metadata, Viewport } from "next";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import ClientProviders from "@/components/client-providers";
+import "./globals.css";
+import { Roboto } from "next/font/google";
 import { auth } from "@/auth";
-import { Header } from "@/components/layout/Header"
-import { BottomNav } from "@/components/layout/BottomNav"
-import { GlobalLoader } from "@/components/GlobalLoader"
-import { ThemeProvider } from "next-themes"
+import { Header } from "@/components/layout/Header";
+import { BottomNav } from "@/components/layout/BottomNav";
+import { GlobalLoader } from "@/components/GlobalLoader";
+import { ThemeProvider } from "next-themes";
+import Script from "next/script";
 
-const roboto = Roboto({ subsets: ['latin'], weight: ['400', '500', '700'] })
+const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
 export const metadata: Metadata = {
   title: "Hidden Bites - Discover Hidden Food Gems",
@@ -49,16 +50,20 @@ export const metadata: Metadata = {
     title: "HiddenBites - Discover Hidden Food Gems",
     description: "Find amazing food spots recommended by your community",
   },
-}
+};
 
 // ✅ Move viewport to separate export
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-}
+};
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const session = await auth();
   return (
     <html lang="en" className={roboto.className} suppressHydrationWarning>
@@ -67,6 +72,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <ClientProviders>
+          <Script
+            src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+            strategy="beforeInteractive"
+          />
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <GlobalLoader />
             <Header session={session} />
@@ -77,5 +86,5 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </ClientProviders>
       </body>
     </html>
-  )
+  );
 }

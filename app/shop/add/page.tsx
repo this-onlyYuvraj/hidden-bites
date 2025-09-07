@@ -20,10 +20,11 @@ import {
 } from "../../../components/ui/select";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MapPin } from "lucide-react";
 import { getCurrentLocation } from "@/components/currentLocation";
 import { createShop } from "@/lib/create-shop";
 import Image from "next/image";
+import LocationInput, { CustomLocation } from "@/components/LocationInput";
 
 export default function AddShopPage() {
   const router = useRouter();
@@ -36,7 +37,11 @@ export default function AddShopPage() {
     priceRange: "",
     location: "",
     description: "",
+    lat: 0,
+    lng: 0,
+    customType: "",
   });
+  const [showCustomType, setShowCustomType] = useState(false);
 
   // For image upload
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -63,6 +68,9 @@ export default function AddShopPage() {
 
   const handleInputChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+    if (field === "type") {
+      setShowCustomType(value === "Others");
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +84,10 @@ export default function AddShopPage() {
   const uploadToCloudinary = async (file: File): Promise<string> => {
     const data = new FormData();
     data.append("file", file);
-    data.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
+    data.append(
+      "upload_preset",
+      process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!
+    );
 
     const res = await fetch(
       `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
@@ -87,7 +98,6 @@ export default function AddShopPage() {
     );
 
     if (!res.ok) throw new Error("Failed to upload image");
-
     const result = await res.json();
     return result.secure_url; // Cloudinary hosted image URL
   };
@@ -105,19 +115,19 @@ export default function AddShopPage() {
 
       const formData = new FormData();
       formData.append("name", form.name);
+      formData.append("type", form.type === "Others" ? form.customType : form.type);
       formData.append("location", form.location || "");
       formData.append("speciality", form.speciality);
       formData.append("priceRange", form.priceRange);
       formData.append("description", form.description);
+      formData.append("latitude", form.lat.toString());
+      formData.append("longitude", form.lng.toString());
       if (imageUrl) formData.append("image", imageUrl);
 
-      // calling backend util
       await createShop(formData);
-
       toast.success("Shop Added Successfully!", {
         description: `${form.name} has been added to Hidden Bites.`,
       });
-
       router.push("/");
     } catch (err: any) {
       console.error("failed shop: ", err);
@@ -186,10 +196,11 @@ export default function AddShopPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="type">Type *</Label>
                   <Select
+                    value={form.type}
                     onValueChange={(value) => handleInputChange("type", value)}
                   >
                     <SelectTrigger>
@@ -203,11 +214,25 @@ export default function AddShopPage() {
                       ))}
                     </SelectContent>
                   </Select>
+
+                  {showCustomType && (
+                    <div className="mt-2">
+                      <Input
+                        placeholder="Enter custom food type"
+                        value={form.customType}
+                        onChange={(e) =>
+                          handleInputChange("customType", e.target.value)
+                        }
+                        className="animate-fade-in"
+                      />
+                    </div>
+                  )}
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-2 w-full">
                   <Label htmlFor="priceRange">Price Range *</Label>
                   <Select
+                    value={form.priceRange}
                     onValueChange={(value) =>
                       handleInputChange("priceRange", value)
                     }
@@ -241,15 +266,22 @@ export default function AddShopPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="location">Location *</Label>
+                <p className="text-muted-foreground text-xs">
+                  *Search is currently unreliable, we recommend using your
+                  current location.
+                </p>
                 <div className="flex gap-2">
-                  <Input
-                    id="location"
-                    placeholder="Area, City"
+                  <LocationInput
                     value={form.location}
-                    onChange={(e) =>
-                      handleInputChange("location", e.target.value)
-                    }
-                    required
+                    onLocationSelect={(loc: CustomLocation) => {
+                      handleInputChange("location", loc.address);
+                      setForm((prev) => ({
+                        ...prev,
+                        lat: loc.lat,
+                        lng: loc.lng,
+                      }));
+                    }}
+                    placeholder="Search for shop location..."
                   />
                   <Button
                     type="button"
@@ -260,6 +292,11 @@ export default function AddShopPage() {
                         const loc = await getCurrentLocation();
                         if (loc) {
                           handleInputChange("location", loc.address);
+                          setForm((prev) => ({
+                            ...prev,
+                            lat: loc.lat,
+                            lng: loc.lng,
+                          }));
                           toast.success("Location added!");
                         }
                       } catch (err: any) {
@@ -269,6 +306,7 @@ export default function AddShopPage() {
                       }
                     }}
                   >
+                    <MapPin />
                     Use Current
                   </Button>
                 </div>

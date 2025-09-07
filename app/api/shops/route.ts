@@ -33,6 +33,8 @@ export async function GET() {
         })),
         rating: avgRating,
         reviewCount: shop.reviews.length,
+        lat: shop.latitude,
+        lng: shop.longitude,
       };
     });
 

@@ -34,7 +34,7 @@ export default async function ProfilePage() {
       <Star
         key={i}
         className={`h-3 w-3 ${i < Math.floor(rating)
-          ? "fill-food-rating text-food-rating"
+          ? "fill-primary text-primary "
           : "fill-muted-foreground/20 text-muted-foreground/40"
           }`}
       />
@@ -56,10 +56,11 @@ export default async function ProfilePage() {
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1">
-                <h1 className="text-2xl font-bold">{session?.user?.name ?? ""}</h1>
+                <h1 className="text-2xl text-primary font-bold">{session?.user?.name ?? ""}</h1>
                 <p className="text-muted-foreground">{session?.user?.email ?? ""}</p>
                 <div className="flex gap-4 mt-2 text-sm">
                   <span><strong>{userShops.length}</strong> shops added</span>
+                  <span><strong>|</strong></span>
                   <span><strong>{userReviews.length}</strong> reviews</span>
                 </div>
               </div>

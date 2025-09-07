@@ -6,7 +6,7 @@ interface ShopPageProps {
 }
 
 export default async function ShopPage({ params }: ShopPageProps) {
-  const { id } = await params; // Await params before using
+  const { id } = await params; 
   const shop = await prisma.shop.findFirst({
     where: { id },
     include: {
@@ -34,10 +34,13 @@ export default async function ShopPage({ params }: ShopPageProps) {
       },
     })),
     reviewCount: shop.reviews.length,
-  rating:
-    shop.reviews.length > 0
-      ? shop.reviews.reduce((sum, r) => sum + r.rating, 0) / shop.reviews.length
-      : 0,
+    rating:
+      shop.reviews.length > 0
+        ? shop.reviews.reduce((sum, r) => sum + r.rating, 0) /
+          shop.reviews.length
+        : 0,
+    lat: shop.latitude ?? null, 
+    lng: shop.longitude ?? null, 
   };
 
   return <ShopDetailClient shop={safeShop} />;
